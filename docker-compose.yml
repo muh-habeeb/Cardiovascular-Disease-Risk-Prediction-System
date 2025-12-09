@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # Backend API Service
+  backend:
+    build:
+      context: ./cvd_backend-main
+      dockerfile: Dockerfile
+    container_name: cvd-backend
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - FRONTEND_ORIGIN=http://localhost:5173
+      - NODE_ENV=production
+      - RATE_LIMIT_WINDOW_MS=60000
+      - RATE_LIMIT_MAX_REQUESTS=200
+    volumes:
+      # Mount models directory to persist ML models
+      - ./cvd_backend-main/models:/app/models:ro
+    networks:
+      - cvd-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4000/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend React Service
+  frontend:
+    build:
+      context: ./cvd_frontend-main
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:4000
+    container_name: cvd-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:4000
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - cvd-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5173"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  cvd-network:
+    driver: bridge
+
+# Optional: Add volumes for persistent data
+volumes:
+  models-data:
+    driver: local
