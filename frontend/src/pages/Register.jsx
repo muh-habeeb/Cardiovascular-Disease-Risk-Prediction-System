@@ -19,6 +19,7 @@ const Register = ({ switchToLogin }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [fieldErrors, setFieldErrors] = useState({});
 
   // Auto-clear messages after 2.5 seconds
   useEffect(() => {
@@ -38,12 +39,36 @@ const Register = ({ switchToLogin }) => {
     const password = formData.get("password");
     const confirmPassword = formData.get("confirmPassword");
 
-    if (!email || !password || !confirmPassword) {
-      setError("All fields are required.");
-      return;
+    const errors = {};
+    let isValid = true;
+
+    if (!email) {
+      errors.email = "Email is required.";
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = "Email address is invalid.";
+      isValid = false;
     }
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+
+    if (!password) {
+      errors.password = "Password is required.";
+      isValid = false;
+    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}/.test(password)) {
+      errors.password = "Password must be at least 8 chars, with uppercase, lowercase, numbers & special chars.";
+      isValid = false;
+    }
+
+    if (!confirmPassword) {
+      errors.confirmPassword = "Confirm password is required.";
+      isValid = false;
+    } else if (password !== confirmPassword) {
+      errors.confirmPassword = "Passwords do not match.";
+      isValid = false;
+    }
+
+    setFieldErrors(errors);
+
+    if (!isValid) {
       return;
     }
 
@@ -108,7 +133,11 @@ const Register = ({ switchToLogin }) => {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form 
+              onSubmit={handleSubmit} 
+              onChange={(e) => setFieldErrors(prev => ({ ...prev, [e.target.name]: null }))}
+              className="space-y-4"
+            >
               <div className="space-y-2">
                 <Label className="text-neutral-300 dark:text-neutral-700">
                   Email
@@ -117,8 +146,13 @@ const Register = ({ switchToLogin }) => {
                   name="email"
                   type="email"
                   placeholder="Enter your email address"
-                  className="h-11 bg-neutral-800 dark:bg-neutral-100 border-neutral-700 dark:border-neutral-300 text-white dark:text-black focus:ring-2 focus:ring-neutral-500"
+                  className={`h-11 bg-neutral-800 dark:bg-neutral-100 border text-white dark:text-black focus:ring-2 ${
+                    fieldErrors.email 
+                      ? "border-red-500 focus:ring-red-500" 
+                      : "border-neutral-700 dark:border-neutral-300 focus:ring-neutral-500"
+                  }`}
                 />
+                {fieldErrors.email && <div className="text-xs text-red-500 mt-1">{fieldErrors.email}</div>}
               </div>
 
               <div className="space-y-2">
@@ -127,10 +161,15 @@ const Register = ({ switchToLogin }) => {
                 </Label>
                 <Input
                   name="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
-                  className="h-11 bg-neutral-800 dark:bg-neutral-100 border-neutral-700 dark:border-neutral-300 text-white dark:text-black focus:ring-2 focus:ring-neutral-500"
+                  className={`h-11 pr-16 bg-neutral-800 dark:bg-neutral-100 border text-white dark:text-black focus:ring-2 ${
+                    fieldErrors.password 
+                      ? "border-red-500 focus:ring-red-500" 
+                      : "border-neutral-700 dark:border-neutral-300 focus:ring-neutral-500"
+                  }`}
                 />
+                {fieldErrors.password && <div className="text-xs text-red-500 mt-1">{fieldErrors.password}</div>}
               </div>
 
               <div className="space-y-2 flex flex-col relative">
@@ -141,16 +180,21 @@ const Register = ({ switchToLogin }) => {
                   name="confirmPassword"
                   type={showPassword ? "text" : "password"}
                   placeholder="Confirm your password"
-                  className="h-11 bg-neutral-800 dark:bg-neutral-100 border-neutral-700 dark:border-neutral-300 text-white dark:text-black focus:ring-2 focus:ring-neutral-500"
+                  className={`h-11 pr-16 bg-neutral-800 dark:bg-neutral-100 border text-white dark:text-black focus:ring-2 ${
+                    fieldErrors.confirmPassword 
+                      ? "border-red-500 focus:ring-red-500" 
+                      : "border-neutral-700 dark:border-neutral-300 focus:ring-neutral-500"
+                  }`}
                 />
 
                 <Button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 px-2 py-1 text-xs bg-neutral-700 dark:bg-neutral-200 text-white dark:text-black hover:bg-neutral-600 dark:hover:bg-neutral-300"
+                  className="absolute right-2 top-[34px] -translate-y-1/2 px-2 py-1 text-xs bg-neutral-700 dark:bg-neutral-200 text-white dark:text-black hover:bg-neutral-600 dark:hover:bg-neutral-300"
                 >
                   {showPassword ? "Hide" : "Show"}
                 </Button>
+                {fieldErrors.confirmPassword && <div className="text-xs text-red-500 mt-1">{fieldErrors.confirmPassword}</div>}
               </div>
 
               <Button
