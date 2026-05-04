@@ -1,0 +1,1703 @@
+INDEX
+Introduction
+………………………………………………….
+……..
+(1 – 
+4)
+Introduction
+ 
+of
+ 
+the 
+System
+Project
+ 
+Title
+Category
+Overview
+Objectives
+ 
+of
+ 
+the
+ 
+System
+Scope of the 
+System
+Structure
+ 
+of the 
+System
+System
+ 
+Architecture
+End
+ 
+Users
+Software/Hardware
+ 
+Used
+ 
+for
+ Development
+Software/Hardware
+ 
+Required
+ 
+for
+ Implementation
+Software
+ 
+Requirements
+ 
+Specification
+ 
+(SRS)
+……………………...
+(5 – 
+8)
+Introduction
+Overall 
+Description
+Product 
+Perspective
+Product 
+Functions
+User
+ 
+Characteristics
+General
+ Constraints
+Special
+ 
+Requirements
+Functional 
+Requirements
+Module 1:
+ 
+Authentication
+Module 2: 
+Interview Scheduling
+Module
+ 
+3: 
+Interview Conduction
+Module 4: Recordings
+Design
+ 
+Constraints
+System
+ 
+Attributes
+Other 
+Requirements
+System 
+Design
+……………………………………………………..
+(9
+ 
+–
+ 
+13
+)
+Introduction
+Assumptions
+ 
+and
+ 
+Constraints
+Functional 
+Decomposition
+Description
+ 
+of
+ Programs
+Context
+ 
+Flow
+ 
+Diagram
+Data
+ 
+Flow
+ 
+Diagrams
+ 
+(Level
+ 
+0,
+ 
+1,
+ 
+2)
+Description
+ 
+of
+ Components
+Database
+ 
+Design
+……………………………………………
+……
+…
+(14
+ 
+–
+ 
+1
+7
+)
+Introduction
+Purpose
+ 
+and
+ 
+Scope
+Table
+ 
+Definition
+ER
+ 
+Diagram
+Detailed
+ 
+Design
+…………………………………………………….
+.
+(1
+8
+ 
+–
+ 
+2
+1
+)
+Introduction
+Structure
+ 
+of the
+ 
+Software 
+Package
+Modular
+ 
+Decomposition
+Module
+ 
+1:
+ 
+Interview Scheduling & Lifecycle Management
+Module
+ 
+2:
+ 
+Real-Time Communication Module
+Module
+ 
+3: 
+Interview Conduction Module
+User
+ 
+Interface
+………………………………………………
+……..
+..
+(2
+2
+ – 
+2
+7
+)
+Login
+Main
+ 
+Screen /
+ 
+Home 
+Page
+Menu
+Data Store / Retrieval / 
+Update
+Meeting Configuration / Pre-Meeting Setup
+Meeting Room
+Interviewer Dashboard
+Past Interviews / Administrative Details
+Data Reports
+Recording
+ 
+Testin
+g………………………………………………………
+………
+.
+(
+28
+ 
+–
+ 
+3
+0
+)
+Introduction
+Unit
+ 
+Testing
+Integration
+ 
+Testing
+System
+ 
+Testing
+Test
+ 
+Reports
+Conclusion
+………
+…………………………………...
+…………
+…
+..
+.
+ 
+(3
+1
+-3
+2
+)
+Limitations…………………
+………………………………
+………
+.
+(
+3
+3
+-3
+4
+)
+Scope for
+ 
+Enhancement
+………
+…………………………….
+…
+……
+(3
+5
+-3
+6
+)
+Abbreviations
+ 
+and
+ 
+Acronyms
+…
+………………………………
+…
+…
+(3
+7
+-
+38
+)
+Bibliography /
+ 
+References
+……
+…………………………………
+…
+.
+.
+(
+39
+-4
+0
+)
+Chapter -
+ 
+1 
+Introduction
+Introduction
+Introduction
+ 
+of
+ 
+the
+ 
+System
+Project 
+Title
+CVD Risk Predictor — AI-powered Heart Disease Detection System
+Category
+Web Technology, Real-Time Communication (WebRTC), and Human Resources (HR) Technology
+Overview
+R
+CVD Risk Predictor is a web-based platform designed to assess the likelihood of cardiovascular disease using advanced machine learning techniques. The system utilizes a trained neural network model converted into ONNX format to deliver fast and efficient real-time predictions. It allows healthcare professionals and individuals to input key clinical parameters and receive accurate risk evaluations. The application features a modern React-based frontend integrated with a Node.js backend, ensuring a smooth, reliable, and scalable user experience. By analyzing 13 health indicators such as age, sex, chest pain type, blood pressure, cholesterol, ECG results, and more, the system generates a probability score and classifies patients into Low, Moderate, or High-risk categories, providing a comprehensive and intelligent approach to cardiovascular risk assessment.
+Objectives
+ 
+of
+ 
+the
+ 
+System
+Provide accurate cardiovascular disease risk prediction using machine learning based on clinical parameters
+.
+Enable early detection of high-risk individuals for timely medical intervention and lifestyle changes
+.
+Offer a web-based platform accessible from any device with internet connectivity
+.
+Design a user-friendly interface with a guided, multi-step form for easy data entry and validation
+.
+Deliver real-time prediction results using optimized ONNX runtime 
+inference.
+Generate comprehensive, downloadable PDF reports with patient details, risk scores, and recommendations
+.
+Ensure system scalability to handle increasing users without performance issues
+.
+Scope of the
+ 
+System
+Provide multi-platform access through a web application usable on desktops, tablets, and 
+              
+mobile devices
+.
+Offer an interactive user interface with a structured, step-by-step form for organized data collection
+.
+Enable AI-powered prediction using a neural network model with ONNX Runtime for fast and accurate results
+.
+Generate automated PDF reports with patient details, test outcomes, and risk evaluation
+.
+Structure
+ 
+of
+ 
+the 
+System
+Dashboard
+ 
+            
+ 
+     
+–
+ 
+ 
+ Manage scheduling, recordings, and instant calls
+.
+Login Module        
+ 
+  – 
+ 
+Secure login using Gmail OAuth or email credentials.
+Schedule Interview 
+ 
+– 
+ 
+Create and assign interviews for specific candidates.
+Meeting Page         
+ 
+  – 
+ 
+Real-time video interview interface like Zoom.
+Recordings             
+ 
+ 
+ – 
+ 
+View and manage past interview sessions
+.
+System
+ 
+Architecture
+The CVD Risk Predictor architecture is designed to provide a secure, intelligent, and real-time environment for cardiovascular risk assessment. It integrates a structured user interface, backend processing, and an ONNX-based inference engine to ensure accurate predictions. The system guides users through step-by-step data entry, processes clinical inputs using normalization techniques, and performs fast AI-based risk evaluation. It delivers results through interactive visualizations and downloadable reports while maintaining a stateless design with strong security measures such as HTTPS communication, CORS protection, and rate limiting to ensure privacy, scalability, and reliable performance
+.
+Main
+ 
+Layers:
+Users
+T
+he system includes two main user types: Interviewers and Candidates.
+All users log in as candidates by default, and authorized users are promoted to interviewers 
+  
+through the 
+convex
+ database
+.
+Authentication
+Secure login is provided through Clerk authentication
+ using Gmail OAuth 
+  
+email-password access
+.
+After login, users are redirected to their dashboards based on their roles.
+Interview 
+UI
+Interviewers can schedule interviews, start instant calls, and share meeting
+  
+links.
+They can also record sessions, review past interviews, and mark candidates 
+  
+as Pass or Fail after feedback submission.
+Candidate 
+UI
+Candidates can view assigned interviews on their dashboard and join meetings at 
+  
+the scheduled time.
+They can also access past recordings for reference and feedback.
+Meeting & Recording Module 
+Provides a 
+real-time video call interface
+ similar to Zoom for conducting 
+  
+interviews.
+Automatically records sessions
+ and stores them for later review.
+Database
+ 
+(
+Convex
+)
+The 
+Convex
+ 
+database
+ securely stores user credentials, interview details, schedules, 
+ 
+ 
+recordings, and feedback data.
+Role-based access ensures interviewers and candidates only access permitted 
+  
+information.
+End
+ 
+Users
+Interviewers – HR personnel, recruiters, or faculty members conducting interviews.
+Candidates – Job applicants or students attending scheduled interviews.
+System
+ 
+Administrators
+ – Manage user roles, schedules, and overall system maintenance.
+Software/Hardware
+ 
+Used
+ 
+for
+ 
+Development
+Software
+:
+React.js + Next.js + Tailwind CSS
+.
+Node.js
+.
+Convex (Database)
+.
+Clerk Authentication (OAuth 2.0 / Email-Password)
+.
+Webhooks / Real-time updates
+.
+VS
+ 
+Code
+.
+Hardware
+:
+Webcam
+.
+Microphone
+.
+PC/Laptop
+/Mobile
+ 
+(Windows
+ 
+OS
+/Android
+)
+.
+Minimum
+ 
+i
+3
+ 
+processor
+ 
+with
+ 
+4
+ 
+GB
+ 
+RAM
+.
+Software/Hardware
+ 
+Required
+ 
+for 
+Implementation
+Software
+:
+Same stack as development: React.js, Next.js, Tailwind CSS, Node.js, Convex
+.
+Clerk Authentication credentials (OAuth 2.0 / Email-Password)
+.
+Hardware
+:
+Any
+ 
+computer
+ 
+with
+ 
+camera
+ 
+& 
+microphone
+.
+Minimum
+ 
+i5
+ 
+processor
+ 
+with
+ 
+8GB
+ 
+RAM
+.
+Stable internet connection for real-time interview sessions
+.
+Chapter
+ 
+-
+ 
+2
+ 
+SRS
+ 
+-
+ 
+Software
+ 
+Requirements
+ Specifications
+Software
+ 
+Requirement
+ 
+Specification
+ (SRS)
+Introduction
+This Software Requirement Specification (SRS) defines the functional and non-functional requirements of the CVD Risk Predictor system. It outlines the software, hardware, and system specifications required to ensure accurate, efficient, and reliable cardiovascular disease risk assessment. The document describes how the system processes user inputs, performs AI-based predictions, and delivers results in real time. It also details user interaction, system features, security measures, and performance expectations. This SRS serves as a foundation for system design, development, and testing while ensuring clarity among stakeholders including developers, testers, and end users. By providing a structured definition of requirements, it helps reduce ambiguity, supports scalability, and ensures the system meets its objectives of accuracy, accessibility, speed, and user-friendliness throughout its lifecycle
+.
+Overall
+ Description
+Product
+ Perspective
+ 
+The CVD Risk Predictor is a web-based intelligent healthcare platform designed to assess an individual’s risk of cardiovascular disease using AI-powered algorithms. Unlike traditional risk calculators, it evaluates 13 clinical and lifestyle parameters to provide a more comprehensive and accurate assessment. The system is built with a React (Vite) frontend for a fast and responsive user interface, and a Node.js with Express.js backend that communicates with a neural network model deployed via ONNX Runtime for efficient, cross-platform inference. It operates entirely online without requiring installation and supports secure, real-time data processing with privacy-focused architecture
+.
+Product 
+Functions
+User input of personal, clinical, and lifestyle parameters through a structured multi-step form
+. 
+AI-based cardiovascular risk prediction using a neural network model (ONNX Runtime)
+. 
+Real-time generation of risk scores categorized as Low, Moderate, or High
+. 
+Interactive visualization of results using animated gauge indicators
+. 
+Downloadable PDF report generation with patient data and recommendations
+. 
+Preset test cases for demonstration of different risk levels
+.
+User
+ 
+Characteristics
+General Users: Individuals seeking to assess their cardiovascular risk
+.
+Healthcare Professionals: Doctors or medical staff using the system for preliminary risk evaluation
+.
+System Administrators/Developers: Manage system performance, updates, and monitoring
+. 
+Users are expected to have basic knowledge of web applications and ability to input health-related data
+. 
+General 
+Constraints
+Requires a stable internet connection for accessing the web application and real-time predictions
+.
+Depends on accurate user-provided clinical data for reliable results
+. 
+Supports modern web browsers across platforms such as Windows, macOS, Android, and iOS
+. 
+System does not store user data, limiting historical tracking or record retrieval
+.
+Special
+ 
+Requirements
+ 
+(Software/Hardware
+ 
+–
+ 
+if
+ 
+any) 
+Software
+:
+React.js, Next.js, Tailwind CSS
+.
+Node.js (Backend)
+.
+Convex (Database)
+.
+Clerk Authentication (OAuth 2.0 / Email-Password)
+Webhooks / Real-time updates integration
+Hardware
+:
+Computer or laptop with webcam and microphone
+.
+Minimum Intel Core i5 (8th Gen or higher) / AMD Ryzen 5 equivalent
+.
+Windows
+ 
+Laptop/Desktop
+/Mobile
+.
+Stable internet connection
+.
+Functional 
+Requirements
+Module 1: 
+Authentication & User Management
+Secure login/signup via Clerk (OAuth supported)
+.
+Validate user roles (Interviewer/Candidate)
+.
+Manage sessions and profiles
+.
+Module
+ 
+2: Interview
+ sc
+heduling
+     
+Create and manage interview sessions
+.
+Send/receive invitations
+.
+Real-time status updates
+.
+Module
+ 
+3: Interview Conduction
+Video/audio via Stream SDK
+.
+Chat and screen sharing
+.
+Record and end sessions safely
+.
+Module
+ 
+4
+: History & Recordings
+View past interviews and recordings
+.
+Design
+ 
+Constraints
+Must support real-time communication
+.
+Cross-platform and responsive UI
+.
+Secure authentication and storage
+.
+Scalable for multiple concurrent users
+.
+System
+ 
+Attributes
+Reliability:
+ 
+Stable ops with retry logic
+.
+Availability:
+ 
+24/7 access; partial offline view
+.
+Security:
+ 
+Clerk auth, encrypted data
+.
+Usability:
+ 
+Simple, intuitive dashboard
+.
+Maintainability:
+ 
+Modular React + Convex backend
+.
+8uytre
+Other Requirements
+ 
+(if 
+Any)
+Log all authentication and interview actions
+.
+Notification for schedules and results
+.
+Data backup and retention policy
+.
+Chapter
+ 
+-
+ 
+3
+System
+ 
+Design
+ 
+(Functional
+ Design)
+System
+ 
+Design
+Introduction
+System design defines how the Interview Management System operates, integrates, and delivers real-time communication between interviewers and candidates. The architecture ensures secure, scalable, and seamless interaction through modular components that handle authentication, scheduling, video streaming, and feedback. The system focuses on automation and reliability—managing interviews, conducting live sessions, and storing results efficiently. It uses Clerk for secure login, Convex for real-time data handling, and Stream SDK for video/audio communication. The design supports smooth synchronization between users while maintaining performance and data security. The architecture is extensible, allowing future integration with HR platforms, AI-based analysis, and mobile applications, ensuring long-term scalability and adaptability.
+ 
+Assumptions
+ 
+and
+ 
+Constraints 
+Assumptions:
+Users are either Interviewers or Candidates registered in the system.
+The application runs on modern browsers with mic & camera access.
+Internet connectivity is available for real-time communication.
+Constraints:
+Relies on Stream SDK for stable audio/video connection.
+Limited to authenticated users via Clerk.
+Performance may vary with network strength.
+Functional 
+Decomposition
+The system is divided into the following major modules:
+Authentication & User Management
+Secure login/signup (Clerk + OAuth)
+.
+Role-based access control
+.
+Interview Scheduling & Management
+Create/update interview slots
+.
+Invite candidates and manage sessions
+.
+Interview Conduction & Communication
+Real-time video/audio & chat
+.
+Interview History & Recordings
+Access past sessions, feedback, and recordings
+.
+Description
+ 
+of
+ Program:
+Context
+ 
+Flow
+ 
+Diagram
+ 
+(CFD)
+Entities
+:
+User (Interviewer / Candidate)
+.
+Camera
+ 
+&
+ Microphone
+.
+Clerk Authentication Service (OAuth)
+.
+Stream SDK (Video/Audio Communication)
+.
+Convex Database (Interview / Feedback Data)
+.
+System
+ 
+Block:
+ 
+Authentication & User Management
+.
+Interview Scheduling & Control Logic
+.
+Video/Chat Communication
+.
+Feedback & Evaluation
+.
+Data Storage & Retrieval
+.
+User
+(Interviewer
+/
+Candidate)
+User
+(Interviewer
+/
+Candidate)
+Authentication &
+User Management
+(Clerk / OAuth)
+Authentication &
+User Management
+(Clerk / OAuth)
+Interview Control & Scheduling Logic
+Interview Control & Scheduling Logic
+Interview Control & Scheduling Logic
+Interview Control & Scheduling Logic
+Feedback & Database
+(Convex Storage)
+Feedback & Database
+(Convex Storage)
+Video/Chat System
+(Stream SDK)
+Video/Chat System
+(Stream SDK)
+Data
+ 
+Flow
+ 
+Diagrams
+ 
+(DFDs)
+Level
+ 
+0
+Interview Management System
+User
+Database
+Interview Management System
+User
+Database
+Level
+ 
+1
+Level
+ 
+2
+Description
+ 
+of
+ Components
+Functional
+ 
+Component
+ 
+1:
+ 
+Authentication
+Purpose:
+ 
+Verify user identity and manage session
+.
+Tools:
+ 
+Clerk OAuth, Role-based access
+.
+Input:
+ 
+Email/OAuth credentials
+.
+Output:
+ 
+Authenticated session
+.
+Functional
+ 
+Component
+ 
+2:
+ 
+Realtime - Communication
+Purpose:
+ 
+Enable video, audio, chat, and screen sharing
+.
+Tools:
+ 
+Stream SDK, WebRTC
+.
+Input:
+ 
+Camera/microphone feed, messages
+.
+Output
+ 
+Live streams, real-time messages
+.
+Chapter
+ 
+-
+ 
+4 
+Database
+ 
+Design
+Database
+ 
+Design
+Introduction
+The database design of the Interview Management System (IMS) securely manages user credentials, interview schedules, feedback, and recordings, using Convex (or a suitable backend) to enable quick data retrieval, real-time updates, and role-based access control for interviewers and candidates. It supports storage of recordings and feedback for auditing, ensures data integrity, and works seamlessly with OAuth authentication, real-time communication, and analytics to handle concurrent interviews efficiently.
+Purpose
+ 
+and
+ 
+Scope
+Purpose
+:
+To securely store and manage user credentials, interview sessions, feedback, and recording information. This design supports real-time access for scheduling, joining, conducting interviews, and recording evaluations.
+Scope
+:
+Localized database used by the IMS desktop/web system
+.
+Stores:
+User roles and credentials (OAuth 2.0 email)
+.
+Interview records and schedules
+.
+Feedback and ratings
+.
+Session logs and recording references
+.
+Recording URLs
+.
+The system can be extended later to integrate with centralized databases or cloud storage.
+Table 
+Definition
+Users 
+Table
+Field
+ 
+Name
+Data 
+Type
+Description
+id (PK)
+INTEGER
+Unique
+ 
+identifier
+ 
+for 
+user
+email
+TEXT
+Gmail for login (OAuth 2.0)
+role
+TEXT
+Interviewer Or Candidate
+avatar
+TEXT
+Profile picture URL
+authenticated
+BOOLEAN
+True if user is authenticated
+Interviews 
+Table
+Field
+ 
+Name
+Data 
+Type
+Description
+interview_id
+INTEGER
+ 
+(PK)
+Unique
+ 
+identifier
+ 
+for 
+interview
+title
+TEXT
+Interview
+ title
+description
+TEXT
+Description or notes
+i
+nterviewer_id (FK → Users)
+INTEGER
+ID of the interviewer
+candidate_id (FK → Users)
+INTEGER
+ID of the candidate
+scheduled_time
+TEXT
+Scheduled datetime
+start_time
+TEXT
+Actual start datetime
+  
+end_time
+TEXT
+Actual end datetime
+status
+TEXT
+Scheduled / 
+I
+n
+ 
+progress / completed / cancelled
+recording_url
+TEXT
+URL of recorded session
+feedback
+TEXT
+Optional: PASS or FAIL
+Feedback 
+Table
+Field
+ 
+Name
+Data 
+Type
+Description
+id 
+INTEGER
+ 
+(PK)
+Unique 
+message id
+interview_id
+TEXT
+FK → Interviews(id)
+interview_id
+TEXT
+F
+K → Users(id)
+message
+TEXT
+Feedback message
+pass_fail
+TEXT
+PASS or FAIL
+created_at
+DATETIME
+Feedback submission timestamp
+ER
+ Diagram
+Chapter
+ 
+-
+ 
+5 
+Detailed
+ 
+Design
+Detailed
+ 
+Design
+Introduction
+The detailed design of the Interview Management System (IMS) focuses on the internal logic of each functional module. This includes input processing, state management, API interactions, and output generation. Each module is designed to handle a specific task—such as authenticating users, scheduling interviews, managing real-time video/audio communication, or processing feedback and recordings—allowing for modular development, testing, and future upgrades. This design ensures the system is maintainable, scalable, and easily understandable.
+Structure
+ 
+of
+ 
+the
+ 
+Software
+ 
+Package
+ 
+(Structure
+ 
+Chart) 
+Interview Management System
+│
+├── 
+Authentication & Authorization Module (Module 1)
+│ ├── Clerk OAuth 2.0 Integration
+│ ├── Role-Based Access Control (Interviewer, Candidate)
+│ └── User Profile Management
+│
+├── 
+Scheduling & Lifecycle Module (Module 2)
+│ ├── Interview Creation & Configuration
+│ ├── Candidate Invitation System
+│ └── Interview Status Tracking (Scheduled, Completed, etc.)
+│
+├── 
+Real-Time Communication Module (Module 3)
+│ ├── Video/Audio Streaming (Stream SDK)
+│ ├── Real-Time Chat Messaging
+│ └── Screen Sharing
+│
+├── 
+Interview Conduction Module (Module 4)
+│ ├── Interview Room UI (Video, Chat Panels)
+│ └── Participant Controls (Mute, Camera Toggle, Share)
+│
+├── 
+Evaluation & Feedback Module (Module 5)
+│ ├── Load Feedback Form
+│ ├── Record Pass/Fail Decision & Rating
+│ └── Submit & Store Feedback
+│
+├── 
+Recording & Playback Module (Module 6)
+│ ├── Initialize & Stop Recording
+│ ├── Recording Storage (Stream/Convex)
+│ └── Playback Interface & Controls
+│
+└── 
+Dashboard & Analytics Module (Module 7)
+├── Display Interview History & Search
+└── Calculate Pass/Fail Analytics
+Modular
+ 
+Decomposition
+ 
+of
+ 
+the
+ System
+Module
+ 
+1:
+ 
+Interview Scheduling & Lifecycle Management
+Inputs
+Interview form data (title, description, date/time).
+Room ID for 
+Candidate invitation.
+Procedural
+ 
+Details
+(Interviewer) Validates the date/time and creates a new interview record in the 
+Convex Database
+.
+Sets the initial status to 
+scheduled
+.
+Generates an invitation link for the candidate.
+File I/O
+ Interfaces
+Interacts with the database for storing and retrieving interview records
+Outputs
+Confirmation of scheduled interview
+.
+Invitation link for the candidate
+.
+Implementation
+ 
+Aspects
+R
+equires network connectivity to send invitations and access the database.
+Includes error handling for invalid date/time or missing candidate info.
+Module
+ 
+2:
+ 
+Real-Time Communication Module
+Inputs
+Audio/video streams from interviewer and candidate devices
+.
+Chat messages
+.
+Procedural
+ 
+Details
+Establishes a secure real-time connection using Stream SDK.
+Handles audio/video streaming, chat messaging, and screen sharing.
+File I/O
+ Interfaces
+Optionally stores temporary recordings for playback.
+Outputs
+Real-time video and audio for interview participants
+.
+Implementation
+ 
+Aspects
+Requires stable internet connection.
+Includes fallback handling for video/audio failures.
+Module
+ 
+3:
+ 
+Interview Conduction Module
+Inputs
+Participant actions (mute/unmute, camera on/off)
+.
+Room session data
+.
+Procedural
+ 
+Details
+Manages the interview room UI and participant controls.
+Updates UI based on participant actions and real-time events.
+File I/O
+ Interfaces
+None (real-time session management)
+.
+Outputs
+Updated interview room UI for all participants
+.
+Logs participant actions if needed
+.
+Implementation
+ 
+Aspects
+Requires responsive frontend for real-time updates.
+Handles edge cases like participants joining late or leaving early.
+Chapter
+ 
+-
+ 
+6
+User
+ 
+Interface
+User 
+Interface
+Login
+The
+ 
+Sign
+ 
+in
+ 
+Page
+ 
+allows
+ 
+users
+ 
+to
+ 
+securely
+ 
+log
+ 
+in
+ 
+using
+ 
+their
+ 
+email
+ 
+and
+ 
+password.
+ 
+It
+ 
+also
+ 
+offers options to reset forgotten passwords and create a new account for first-time users.
+Main
+ 
+Screen
+ 
+/
+ 
+Home
+ 
+Page
+The Home Page welcomes the user by name and displays a list of medical specialties such as Neurology
+ 
+and
+ 
+Cardiology.
+ 
+It
+ 
+also
+ 
+provides
+ 
+quick
+ 
+access
+ 
+to
+ 
+features
+ 
+like
+ 
+voice
+ 
+AI
+ 
+activation
+ 
+and gesture control status.
+Menu
+A
+ 
+clean
+ beautiful UI for admin to manage interviews and recording.
+Data Store /
+ 
+Retrieval / 
+Update
+Users can access interview details by selecting an interview or entering its ID. The system displays interview title, participants, scheduled time, and status. Interviewers can update feedback and notes after the session
+.
+Meeting Configuration / Pre-Meeting Setup
+Before joining an interview, users access a configuration menu where they can select and test their camera and microphone, check video and audio quality, and enable or disable screen sharing. The interface also displays interview details such as participants, time, and title, ensuring the environment is properly set up for a smooth live session.
+Meeting Room
+The Meeting Room serves as the live interface for ongoing interviews. Users participate in real-time video and audio calls with all participants while having access to a live chat panel for text communication. The system provides options to record the interview session and includes participant controls such as mute/unmute, camera toggle, and screen sharing. The interface updates dynamically to reflect the current status of each participant.
+Interviewer Dashboard
+The Interviewer Dashboard provides a complete overview of all activities. Users can view upcoming interviews with their scheduled times. Past interviews are displayed with detailed information, including participant names, interview outcomes with pass/fail status, and any recorded sessions. Interviewers can also add, view, or edit comments for each past interview to provide feedback or notes. The dashboard consolidates all relevant data, making it easy to track performance, review past interviews, and manage pending feedback efficiently.
+ 
+P
+ast Interviews / Administrative Details
+Administrators and interviewers can review past interview sessions, including detailed participant information, schedule, and available recordings. They can also view feedback submitted by interviewers, examine session logs with chat messages, timestamps, and attendance, and optionally export reports for record-keeping and performance analysis.
+Schedule Interview
+ 
+Interviewer 
+can schedule new interviews through a dedicated interface by entering the title, description, date, and time, selecting the candidate(s) and interviewer(s), generating unique meeting links for participants, and saving all details to the central Convex database
+6.10 Recording
+The Recording section manages the capture and storage of interview sessions. All interviews can be recorded automatically or manually, creating a secure digital record of the meeting. Recorded sessions are linked to the respective interview and stored in the database or cloud storage, allowing authorized users to access them later for review or verification. This section also provides options to view recording details such as duration, file format, and associated participants, ensuring transparency and accountability for all interviews
+Chapter
+ 
+-
+ 
+7
+ 
+Testing
+ 
+Testing
+Introduction
+Testing ensures that the CVD Risk Predictor system functions accurately, reliably, and provides a smooth user experience. Each component of the system was tested individually (unit testing), the interaction between frontend, backend, and AI model was validated (integration testing), and the complete workflow was evaluated under real-world usage conditions (system testing). Special attention was given to edge cases such as invalid input values, missing clinical parameters, and unexpected user behavior to ensure system stability and robustness
+.
+Unit 
+Testing
+Each
+ 
+module
+ 
+of
+ 
+the
+ 
+IMS 
+system
+ 
+was
+ 
+individually
+ 
+tested
+ 
+to
+ 
+ensure
+ 
+proper functionality and reliability:
+Input Validation: Verified correct handling of user inputs for all 13 clinical and lifestyle parameters, including detection of invalid, missing, or out-of-range values
+.
+Data Preprocessing: Tested StandardScaler-based normalization to ensure consistent feature scaling before model inference
+.
+AI Model Inference: Validated ONNX Runtime execution to confirm accurate risk prediction output for different input scenarios
+.
+Backend API: Ensured Express.js endpoints correctly processed requests, returned proper JSON responses, and handled errors gracefully
+.
+Frontend Forms: Tested multi-step form navigation, state updates, and data persistence across Personal, Clinical, and Lifestyle sections
+.
+Result Visualization: Verified correct rendering of animated risk gauge and interpretation messages for Low, Moderate, and High-risk outputs
+.
+PDF Report Generation: Ensured accurate generation and download of reports containing patient data and prediction results
+.
+Integration
+ 
+Testing
+Modules were tested together to ensure data flowed correctly
+:
+User Input → Backend Processing → ONNX Model → Risk Prediction → Result Display
+Verified smooth communication between frontend, backend, and AI model
+.
+Ensured prediction output correctly reflects in UI and PDF report generation
+Confirmed proper handling of errors across all connected modules 
+System
+ 
+Testing
+System testing involved evaluating the CVD Risk Predictor as a complete application in real-world usage scenarios. This phase ensured that all modules worked seamlessly together and met the required functional and performance expectations
+.
+Key
+ 
+Functional
+ 
+Areas
+ Tested
+:
+Full system tested from user input to final risk prediction and report generation
+.
+Verified role-independent access, real-time processing, and error handling across the workflow
+.
+Ensured stability and consistent performance under multiple simultaneous user requests and AI inferences
+.
+Test
+ Reports
+Test 
+Case
+Description
+Expected
+ 
+Result
+Status
+TC_001
+Login via OAuth
+User logged in
+Passed
+TC_002
+Role-based access
+Correct access
+Passed
+TC_003
+Schedule interview
+Invitation sent
+Passed
+TC_004
+Video/Audio call
+Works properly
+Passed
+TC_005
+Feedback submission
+Stored correctly
+Passed
+TC_006
+  
+Recording & playback
+Functions correctly
+Passed
+Chapter
+ 
+-
+ 8
+Conclusion
+Conclusion
+The CVD Risk Predictor system effectively integrates machine learning, web technologies, and healthcare data analysis to deliver an intelligent cardiovascular risk assessment platform. It combines 13 clinical and lifestyle parameters with an ONNX-based neural network model to generate fast, accurate, and reliable risk predictions in real time. The system enhances accessibility by providing a web-based interface that works across multiple devices without installation, ensuring wider reach and usability.
+With its stateless and privacy-preserving architecture, the system ensures that no patient data is stored, thereby improving security and compliance with data protection standards. Features such as step-by-step data entry, animated risk visualization, and automated PDF report generation improve usability and make health insights easy to understand for users and healthcare professionals alike.
+Overall, the CVD Risk Predictor contributes to preventive healthcare by enabling early detection of cardiovascular risk, improving awareness, and supporting timely medical consultation. Its scalable design and efficient AI integration make it a strong foundation for future enhancements such as advanced analytics, explainable AI, and integration with healthcare systems
+.
+Chapter
+ 
+-
+ 9
+Limitations
+ 
+Limitations
+The system provides only risk assessment and cannot replace professional medical diagnosis; users must consult healthcare professionals for confirmation and treatment
+.
+Prediction accuracy depends on the quality and diversity of the training dataset; performance may vary across different populations
+.
+The system relies entirely on user-provided input, and inaccurate or estimated data may lead to unreliable results
+.
+It does not consider additional clinical factors such as medical history, family history, genetic conditions, or ongoing medications
+.
+The model is static and does not update or learn from new data unless retrained and redeployed
+.
+A stable internet connection is required as the application is fully web-based
+.
+No user data is stored, so previous assessments cannot be retrieved without manual saving
+.
+Risk evaluation is limited to the 13 predefined parameters and excludes other potentially relevant health factors
+.
+The system does not integrate with Electronic Health Record (EHR) systems or external healthcare databases
+.
+Currently, the platform supports only the English language and lacks multilingual capabilities
+.
+Chapter
+ 
+-
+ 10
+Scope for Enhancement
+Scope for 
+Enhancement
+Integrate advanced AI models to improve prediction accuracy and provide deeper cardiovascular insights
+.
+Include explainable AI features to show which clinical factors most influence the risk score
+.
+Support multilingual interfaces to make the system accessible to a wider global audience
+.
+Add integration with Electronic Health Records (EHR) systems for real-time patient data access
+.
+Enable offline data caching for temporary usage without continuous internet connectivity
+.
+Introduce mobile application versions for Android and iOS platforms
+.
+Provide voice-based or assisted data entry for improved accessibility
+.
+Expand analytics with long-term health tracking and trend visualization for users
+.
+Enhance security using multi-factor authentication and encrypted data storage options (if data persistence is added in future)
+.
+Chapter
+ 
+-
+ 11
+Abbreviations and Acronyms
+ 
+Abbreviations
+ 
+and
+ 
+Acronyms
+Acronym
+Full
+ 
+Form
+AI
+Artificial
+ 
+Intelligence
+API
+Application
+ 
+Programming
+ Interface
+DB
+Database
+HCI
+Human-Computer
+ 
+Interaction
+ID
+Identification
+OAuth
+Open 
+Authorization
+UI
+User
+ Interface
+SQL
+Structured
+ 
+Query
+ 
+Language
+HD
+High 
+Definition
+HIPAA
+Health
+ 
+Insurance
+ 
+Portability
+ 
+and
+ 
+Accountability
+ 
+Act
+TTS
+Text-to-Speech
+STT
+Speech-to-
+Text
+GUI
+Graphical
+ 
+User
+ Interface
+NLP
+Natural
+ 
+Language
+ 
+Processing
+ML
+Machine
+ Learning
+CV
+Computer
+ Vision
+OTP
+One-Time
+ 
+Password
+GUI
+Graphical
+ 
+User
+ Interface
+API
+ 
+Key
+Application
+ 
+Programming
+ 
+Interface
+ 
+Key
+SDK
+Software
+ 
+Development
+ 
+Kit
+VS
+ 
+Code
+Visual
+ 
+Studio
+ 
+Code
+DBMS
+Database
+ 
+Management
+ System
+UI/UX
+User
+ 
+Interface
+ 
+/
+ 
+User
+ 
+Experience
+CPU
+Central
+ 
+Processing
+ Unit
+RAM
+Random
+ 
+Access
+ 
+Memory
+2FA
+Two-Factor
+ Authentication
+Chapter - 12
+Bibliography / References
+Bibliography / 
+References
+GitHub:
+ 
+https://github.com/
+YouTube:
+ 
+https://www.youtube.com
+ChatGPT (OpenAI):
+ 
+https://openai.com/chatgpt/overview
+GitHub Copilot: 
+https://github.com/features/copilot
+ Postman:
+ 
+https://postman.com/
+Node.js
+:
+ https://nodejs.org/docs/

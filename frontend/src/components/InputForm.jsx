@@ -39,21 +39,21 @@ const parseCSVFile = (content) => {
         try {
           const data = results.data || [];
           const extracted = {};
-          
+
           if (data.length === 0) throw new Error("CSV file is empty.");
-          
+
           // Check if first row contains headers matching our ORDER fields
           const firstRow = data[0];
           const headerRow = firstRow.map((h) => h.toString().toLowerCase().trim());
-          const hasHeaders = ORDER.some((field) => 
+          const hasHeaders = ORDER.some((field) =>
             headerRow.some((h) => h.includes(field))
           );
-          
+
           // If headers exist, use them; otherwise use first data row
           const dataRow = hasHeaders ? data[1] : data[0];
-          
+
           if (!dataRow) throw new Error("CSV file has no data rows.");
-          
+
           if (hasHeaders) {
             // Map by header names
             ORDER.forEach((field) => {
@@ -66,7 +66,7 @@ const parseCSVFile = (content) => {
               extracted[field] = String(dataRow[idx] || "");
             });
           }
-          
+
           resolve(extracted);
         } catch (err) {
           reject(new Error("Invalid CSV format."));
@@ -83,40 +83,71 @@ const parsePDFFile = (arrayBuffer) => {
     try {
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
       let allText = "";
-      
+
       for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
         const textContent = await page.getTextContent();
         allText += textContent.items.map((item) => item.str).join(" ") + " ";
       }
-      
+
       const extracted = {};
       let foundAnyField = false;
-      
+
+      // Extract full name from the PDF
+      const nameMatch = allText.match(/Name:\s*(.*?)\s*Predicted Risk/i);
+      if (nameMatch && nameMatch[1]) {
+        extracted.fullName = nameMatch[1].trim();
+        foundAnyField = true;
+      }
+
+      const featureNames = {
+        age: "Age",
+        sex: "Sex",
+        cp: "Chest Pain Type",
+        trestbps: "Resting Blood Pressure",
+        chol: "Serum Cholesterol",
+        fbs: "Fasting Blood Sugar",
+        restecg: "Resting ECG",
+        thalach: "Max Heart Rate",
+        exang: "Exercise-induced Angina",
+        oldpeak: "ST Depression",
+        slope: "Slope of Peak Exercise ST",
+        ca: "Number of Major Vessels",
+        thal: "Thalassemia",
+      };
+
       // Try to extract values by looking for field names in the text
       // Handles formats like: "oldpeak: 0.5", "oldpeak = 0.5", "oldpeak 0.5"
       ORDER.forEach((field) => {
+        const fullName = featureNames[field];
         // Create regex patterns to match the field name followed by a value
         const patterns = [
-          new RegExp(`${field}\\s*[:=]\\s*([\\d.]+)`, "i"),
-          new RegExp(`${field}\\s+([\\d.]+)`, "i"),
+          new RegExp(`${field}\\s*[:=]\\s*([a-zA-Z0-9.]+)`, "i"),
+          new RegExp(`${field}\\s+([a-zA-Z0-9.]+)`, "i"),
+          new RegExp(`${fullName}\\s*[:=]\\s*([a-zA-Z0-9.]+)`, "i"),
+          new RegExp(`${fullName}\\s+([a-zA-Z0-9.]+)`, "i"),
         ];
-        
+
         for (let pattern of patterns) {
           const match = allText.match(pattern);
           if (match && match[1]) {
-            extracted[field] = String(match[1]);
+            let val = String(match[1]);
+            if (field === "sex") {
+              if (val.toLowerCase() === "male") val = "1";
+              else if (val.toLowerCase() === "female") val = "0";
+            }
+            extracted[field] = val;
             foundAnyField = true;
             break;
           }
         }
-        
+
         // If not found, leave empty
         if (!extracted[field]) {
           extracted[field] = "";
         }
       });
-      
+
       // If no fields were found by name, fall back to sequential extraction
       if (!foundAnyField) {
         const numbers = extractNumbers(allText);
@@ -124,11 +155,11 @@ const parsePDFFile = (arrayBuffer) => {
           extracted[field] = String(numbers[idx] || "");
         });
       }
-      
+
       if (Object.values(extracted).every((v) => v === "")) {
         throw new Error("No numerical data found in PDF.");
       }
-      
+
       resolve(extracted);
     } catch (err) {
       reject(new Error("Failed to parse PDF. Ensure it contains numerical medical data."));
@@ -154,7 +185,7 @@ function Field({ label, name, children, hint, error }) {
 }
 export default function InputForm({ onSubmit, isLoading }) {
   const [step, setStep] = useState(1);
-  const {user} = useUser();
+  const { user } = useUser();
   const fileInputRef = useRef(null);
   const [form, setForm] = useState({
     fullName: user?.username ? user?.username.split("@")[0] : "",
@@ -209,15 +240,15 @@ export default function InputForm({ onSubmit, isLoading }) {
             const lowerKey = key.toLowerCase().trim();
             normalizedContent[lowerKey] = content[key];
           });
-          
+
           // Map to ORDER fields
           ORDER.forEach((field) => {
-            extractedData[field] = 
-              normalizedContent[field] !== undefined 
-                ? String(normalizedContent[field]) 
+            extractedData[field] =
+              normalizedContent[field] !== undefined
+                ? String(normalizedContent[field])
                 : "";
           });
-          
+
           // If JSON has fullName, preserve it
           if (normalizedContent.fullname) {
             extractedData.fullName = String(normalizedContent.fullname);
@@ -276,12 +307,12 @@ export default function InputForm({ onSubmit, isLoading }) {
 
   const onChange = (e) => {
     const { name, value } = e.target;
-    
+
     // Limit numeric inputs to 10 characters max
     if (e.target.type === "number" && value.length > 10) {
       return;
     }
-    
+
     setForm((f) => ({ ...f, [name]: value }));
     if (fieldErrors[name]) {
       setFieldErrors((prev) => ({ ...prev, [name]: null }));
@@ -368,29 +399,29 @@ export default function InputForm({ onSubmit, isLoading }) {
     ORDER.forEach((k) => {
       payload[k] = Number(form[k]);
     });
-    
+
     // Clear temp file data after use as requested
     localStorage.removeItem("tempFileData");
-    
+
     onSubmit(payload);
   };
 
   const presets = {
     low: {
       fullName: "Priya Sharma",
-      age: "45",
+      age: "41",
       sex: "0",
       cp: "1",
-      trestbps: "120",
-      chol: "200",
+      trestbps: "130",
+      chol: "204",
       fbs: "0",
-      restecg: "1",
-      thalach: "180",
+      restecg: "0",
+      thalach: "172",
       exang: "0",
-      oldpeak: "0.5",
+      oldpeak: "1.4",
       slope: "2",
       ca: "0",
-      thal: "1",
+      thal: "2",
     },
     moderate: {
       fullName: "Arjun Kumar",
@@ -442,11 +473,11 @@ export default function InputForm({ onSubmit, isLoading }) {
   //   };
   // }, [form.fullName]);
   return (
-// NEW LINE 125:
-<div className="rounded-3xl shadow-xl hover:shadow-2xl transition-all backdrop-blur-lg bg-zinc-900 text-white dark:bg-white dark:text-black border border-white/30 p-8">      {/* Step indicator */}
+    // NEW LINE 125:
+    <div className="rounded-3xl shadow-xl hover:shadow-2xl transition-all backdrop-blur-lg bg-zinc-900 text-white dark:bg-white dark:text-black border border-white/30 p-8">      {/* Step indicator */}
       <div className="flex justify-center mb-4 text-sm opacity-70">
-  Step {step} of 3
-</div>
+        Step {step} of 3
+      </div>
 
       <AnimatePresence mode="wait">
         {step === 1 && (
@@ -470,7 +501,7 @@ export default function InputForm({ onSubmit, isLoading }) {
                   {isFileMode && <span className="text-xs text-emerald-400 ml-2">✓ Loaded</span>}
                 </span>
                 {isFileMode && (
-                  <button 
+                  <button
                     onClick={clearFile}
                     className="text-xs px-3 py-1 bg-red-500/20 text-red-400 rounded hover:bg-red-500/30 transition"
                   >
@@ -506,8 +537,8 @@ export default function InputForm({ onSubmit, isLoading }) {
             </Field>
             {form.fullName && (
               <div className="text-sm opacity-80">
-  Hey <span className="font-semibold">{form.fullName}</span> — let’s check your heart.
-</div>
+                Hey <span className="font-semibold">{form.fullName}</span> — let’s check your heart.
+              </div>
             )}
             <Field label="Age" name="age" hint="years" error={fieldErrors.age}>
               <input
@@ -628,7 +659,7 @@ export default function InputForm({ onSubmit, isLoading }) {
             transition={{ duration: 0.25 }}
             className="space-y-4"
           >
-<h2 className="text-xl font-bold text-inherit">              Lifestyle & Test Results
+            <h2 className="text-xl font-bold text-inherit">              Lifestyle & Test Results
             </h2>
             {[
               {
@@ -684,7 +715,7 @@ export default function InputForm({ onSubmit, isLoading }) {
                     value={form[f.name]}
                     onChange={onChange}
                     disabled={isFileMode}
-                    className="w-full bg-white/10 dark:bg-black/5 text-inherit border border-white/20 dark:border-black/10 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"                  />
+                    className="w-full bg-white/10 dark:bg-black/5 text-inherit border border-white/20 dark:border-black/10 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed" />
                 )}
               </Field>
             ))}
